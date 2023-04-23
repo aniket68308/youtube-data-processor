@@ -15,8 +15,6 @@ ENV HADOOP_VERSION=3
 # Set working directory
 WORKDIR /app
 
-COPY spark-hadoop/spark-3.4.0-bin-hadoop3.tgz /app/spark-3.4.0-bin-hadoop3.tgz
-
 # Download and install Spark
 RUN apt-get update && \
     apt-get install -y wget && \
