@@ -2,8 +2,6 @@ README.md
 setup.py
 data_processor/__init__.py
 data_processor/data_processor.py
-data_processor/tests/__init__.py
-data_processor/tests/test_data_processor.py
 logger/__init__.py
 logger/logger.py
 outstruct_processor/__init__.py
