@@ -35,7 +35,7 @@ docker run -it --rm \
   data-processor-spark-app
 ```
 
-This command mounts the local `path_input_of_csv_file` and `input_path_output_folder` directories to the corresponding directories inside the Docker container. It also maps the container ports 4040 and 8080 to the corresponding host ports 4040 and 8080 respectively, so that you can access Spark UI from your web browser. Finally, it runs the `data-processor-spark-app` Docker image with the `-i` and `-o` options to specify the input file and output directory for the `main.py` script.
+This command mounts the local `<path_input_of_csv_file>` and `<input_path_output_folder>` directories to the corresponding directories inside the Docker container. It also maps the container ports 4040 and 8080 to the corresponding host ports 4040 and 8080 respectively, so that you can access Spark UI from your web browser. Finally, it runs the `data-processor-spark-app` Docker image.
 
 ## Testing data in `test_data`
 
@@ -47,5 +47,5 @@ docker run -it --rm -v "$(pwd)/test_data/sample_input/raw_video_data.csv:/app/da
 
 ```
 
-This command mounts the local `path_input_of_csv_file` and `input_path_output_folder` directories to the corresponding directories inside the Docker container. It also maps the container ports 4040 and 8080 to the corresponding host ports 4040 and 8080 respectively, so that you can access Spark UI from your web browser. Finally, it runs the `data-processor-spark-app` Docker image with the `-i` and `-o` options to specify the input file and output directory for the `main.py` script.
+This command mounts the local `test_data/sample_input/raw_video_data.csv` and `test_data/sample_processed_data` directories to the corresponding directories inside the Docker container.
 
