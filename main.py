@@ -3,7 +3,7 @@ import os
 import shutil
 
 from logger.logger import Logger
-from youtube_data_processor.youtube_data_processor import YouTubeDataProcessor
+from data_processor.data_processor import YouTubeDataProcessor
 from outstruct_processor.outstruct_processor import OutStructProcessor
 
 

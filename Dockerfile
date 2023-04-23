@@ -30,7 +30,7 @@ RUN wget https://dlcdn.apache.org/spark/spark-3.4.0/spark-3.4.0-bin-hadoop3.tgz 
 COPY dist/youtube-data-processor-0.1.0.tar.gz /app/youtube-data-processor.tar.gz
 COPY main.py /app/main.py
 
-RUN pip install /app/youtube-data-processor.tar.gz pyspark==${SPARK_VERSION}
+RUN pip install /app/youtube-data-processor.tar.gz
 
 # Expose ports for accessing Spark UI
 EXPOSE 4040 8080
@@ -39,4 +39,4 @@ EXPOSE 4040 8080
 VOLUME ["/app/data/output"]
 
 # Set command to run the PySpark code
-CMD ["/usr/local/spark/bin/spark-submit", "--master", "local[2]", "--py-files", "/app/youtube-data-processor.tar.gz", "main.py", "-i", "/app/input/raw_input.csv", "-o", "/app/data/output"]
+CMD ["/usr/local/spark/bin/spark-submit", "--master", "local[2]", "main.py", "-i", "/app/data/input_file.csv", "-o", "/app/data/output"]
