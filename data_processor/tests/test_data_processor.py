@@ -1,8 +1,6 @@
 import unittest
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import *
-from pyspark.sql.types import IntegerType
-from youtube_data_processor.youtube_data_processor import YouTubeDataProcessor
+from data_processor.data_processor import YouTubeDataProcessor
 
 
 class TestYouTubeDataProcessor(unittest.TestCase):

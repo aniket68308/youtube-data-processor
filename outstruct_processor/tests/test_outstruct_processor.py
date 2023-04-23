@@ -1,5 +1,4 @@
 import os
-import shutil
 import tempfile
 import unittest
 from outstruct_processor.outstruct_processor import OutStructProcessor
@@ -8,48 +7,48 @@ from outstruct_processor.outstruct_processor import OutStructProcessor
 class TestOutStructProcessor(unittest.TestCase):
 
     def setUp(self):
-        self.test_dir = tempfile.mkdtemp()
-        self.processor = OutStructProcessor(self.test_dir)
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.out_struct_processor = OutStructProcessor(self.temp_dir.name)
 
     def tearDown(self):
-        shutil.rmtree(self.test_dir)
+        self.temp_dir.cleanup()
+
+    def test_run(self):
+        # Create the subdirectories and a .crc file for testing
+        publish_year_dir = "2023"
+        publish_month_dir = "04"
+        category_id_dir = "category1"
+        dir_path = os.path.join(self.temp_dir.name, publish_year_dir, publish_month_dir, category_id_dir)
+        os.makedirs(dir_path, exist_ok=True)
+        with open(os.path.join(dir_path, "file.json"), 'w') as f:
+            f.write("test")
+        with open(os.path.join(dir_path, "file.crc"), 'w') as f:
+            f.write("test")
+
+        self.out_struct_processor.run()
+
+        # Assert that the .crc file was removed and the .json file was renamed
+        self.assertFalse(os.path.isfile(os.path.join(dir_path, "file.crc")))
+        self.assertFalse(os.path.isfile(os.path.join(dir_path, "file.json")))
+        self.assertTrue(os.path.isfile(os.path.join(dir_path, "data.json")))
 
     def test_remove_crc_files(self):
-        # Create test files with .crc and .json extensions
-        file1 = os.path.join(self.test_dir, 'file1.json')
-        file2 = os.path.join(self.test_dir, 'file2.crc')
-        file3 = os.path.join(self.test_dir, 'file3.json')
-        file4 = os.path.join(self.test_dir, 'file4.crc')
-        open(file1, 'a').close()
-        open(file2, 'a').close()
-        open(file3, 'a').close()
-        open(file4, 'a').close()
+        # Create a .crc file for testing
+        dir_path = self.temp_dir.name
+        with open(os.path.join(dir_path, "file.crc"), 'w') as f:
+            f.write("test")
 
-        # Call remove_crc_files method and check if .crc files were deleted
-        self.processor.remove_crc_files()
-        self.assertFalse(os.path.exists(file2))
-        self.assertFalse(os.path.exists(file4))
-        self.assertTrue(os.path.exists(file1))
-        self.assertTrue(os.path.exists(file3))
+        self.out_struct_processor.remove_crc_files(dir_path)
+
+        self.assertFalse(os.path.isfile(os.path.join(dir_path, "file.crc")))
 
     def test_rename_json_files(self):
-        # Create test files with .json extensions
-        file1 = os.path.join(self.test_dir, 'file1.json')
-        file2 = os.path.join(self.test_dir, 'file2.json')
-        file3 = os.path.join(self.test_dir, 'file3.json')
-        file4 = os.path.join(self.test_dir, 'file4.json')
-        open(file1, 'a').close()
-        open(file2, 'a').close()
-        open(file3, 'a').close()
-        open(file4, 'a').close()
+        # Create a .json file for testing
+        dir_path = self.temp_dir.name
+        with open(os.path.join(dir_path, "file.json"), 'w') as f:
+            f.write("test")
 
-        # Call rename_json_files method and check if files were renamed correctly
-        self.processor.rename_json_files()
-        self.assertTrue(os.path.exists(os.path.join(self.test_dir, 'data_1.json')))
-        self.assertTrue(os.path.exists(os.path.join(self.test_dir, 'data_2.json')))
-        self.assertTrue(os.path.exists(os.path.join(self.test_dir, 'data_3.json')))
-        self.assertTrue(os.path.exists(os.path.join(self.test_dir, 'data_4.json')))
-        self.assertFalse(os.path.exists(file1))
-        self.assertFalse(os.path.exists(file2))
-        self.assertFalse(os.path.exists(file3))
-        self.assertFalse(os.path.exists(file4))
+        self.out_struct_processor.rename_json_files(dir_path)
+
+        self.assertFalse(os.path.isfile(os.path.join(dir_path, "file.json")))
+        self.assertTrue(os.path.isfile(os.path.join(dir_path, "data.json")))
